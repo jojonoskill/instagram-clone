@@ -1,6 +1,12 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import {child, get, getDatabase, ref} from 'firebase/database';
-const InitialStateValue = {username: '', isLoggedIn: false};
+
+const INITIAL_STATE = JSON.parse(localStorage.getItem("user")) || {
+  username: '',
+  isLoggedIn: false,
+
+}
+
 
 export const loginUser = createAsyncThunk('user/loginUser', async ( formData) => {
   const dbRef = ref(getDatabase());
@@ -11,19 +17,23 @@ export const loginUser = createAsyncThunk('user/loginUser', async ( formData) =>
       return formData;
     }
   }
-} )
+})
 
 const userSLice = createSlice({
   name: 'user',
-  initialState: {value: InitialStateValue},
-  reducers: {},
+  initialState: {value: INITIAL_STATE},
+  reducers: {
+    logout : (state) => {
+
+    }
+  },
   extraReducers: builder => {
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.value = {
         username: action.payload.username,
         isLoggedIn: true,
       }
-      console.log(state.value);
+      localStorage.setItem("user", JSON.stringify(state.value));
     })
   }
 

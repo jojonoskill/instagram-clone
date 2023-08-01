@@ -7,7 +7,7 @@ const Redirect = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (!user.isLoggedIn) navigate('/login');
-    if(user.isLoggedIn) navigate(`/profile/${user.name}`);
+    if(user.isLoggedIn) navigate(`/profile/${user.username}`);
   })
 
   return (
